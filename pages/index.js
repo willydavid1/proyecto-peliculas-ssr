@@ -17,19 +17,23 @@ const Index = props => {
     );
   }
 
-  // si existe o no la busqueda al endpoint de la API
+  // si no existe la busqueda al endpoint de la API
   if (props.respuestaEstado === "False") {
     return (
       <Layout>
         <div className="index">
+
+        <div className="index__paginaNumeroContainer">
+          <p className="index__paginaNumero"> <strong> Página #{props.pagina} </strong> </p>
+        </div>
+
           <h1 className="index__h1">
-            {" "}
-            Parece que haz llegado al final o la lista de Peliculas no Existe!
+            Parece que haz llegado al final de la lista de Peliculas!
           </h1>
           <Link
             href={{ pathname: "/", query: { pagina: `${props.pagina - 1}` } }}
           >
-            <a>Anterior</a>
+            <a className="paginacion__enlace">Anterior</a>
           </Link>
         </div>
 
@@ -38,11 +42,40 @@ const Index = props => {
             border: 1px gray solid;
             padding: 20px;
             margin: 20px;
+            position: relative;
           }
 
           .index__h1 {
             margin-bottom: 50px;
             text-align: center;
+          }
+
+          .index__paginaNumero {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            background: #4d80e4;
+            color: white;
+            padding: 3px 12px;
+          }
+
+          .paginacion__enlace {
+            margin: 0 10px;
+            padding: 7px;
+            color: white;
+            background: #142850;
+            border-radius: 28px;
+  
+            -webkit-box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.7);
+            -moz-box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.7);
+            box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.7);
+          }
+  
+          .paginacion__enlace:hover {
+            transition: 0.8s;
+            -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
           }
         `}</style>
       </Layout>
@@ -54,11 +87,15 @@ const Index = props => {
       <div className="index">
         <h1 className="index__h1">Batman peliculas</h1>
 
-        <ul>
+        <div className="index__paginaNumeroContainer">
+          <p className="index__paginaNumero"> <strong> Página #{props.pagina} </strong> </p>
+        </div>
+
+        <ul className="ul__container">
           {props.peliculas.map((pelicula, index) => (
             <li key={index}>
               <Link href="/p/[id]" as={`/p/${pelicula.imdbID}`}>
-                <a className="index__boton">{pelicula.Title}</a>
+                <a className="index__boton">▫ {pelicula.Title}</a>
               </Link>
             </li>
           ))}
@@ -87,6 +124,7 @@ const Index = props => {
           border: 1px gray solid;
           padding: 20px;
           margin: 20px;
+          position: relative;
         }
 
         .index__h1 {
@@ -103,16 +141,40 @@ const Index = props => {
           text-align: center;
         }
 
+        .ul__container{
+          max-width: 870px;
+          margin: 0 auto;
+        }
+
+        li {
+          margin: 6px 0;
+        }
+
+        @media screen and (max-width: 425px){
+          li {
+            margin: 20px 0;
+          }
+        }
+
+        .index__paginaNumero {
+          position: absolute;
+          right: 0px;
+          top: 0px;
+          background: #4d80e4;
+          color: white;
+          padding: 3px 12px;
+        }
+
         .paginacion__enlace {
           margin: 0 10px;
           padding: 7px;
           color: white;
-          background: slategray;
+          background: #142850;
           border-radius: 28px;
-          
-          -webkit-box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.7);
-          -moz-box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.7);
-          box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.7);
+
+          -webkit-box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.7);
+          -moz-box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.7);
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.7);
         }
 
         .paginacion__enlace:hover {

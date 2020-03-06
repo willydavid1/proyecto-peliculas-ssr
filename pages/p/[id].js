@@ -1,6 +1,7 @@
 import Layout from "../../components/MyLayout";
 // import fetch from "isomorphic-unfetch";
 import Axios from "axios";
+import Link from "next/link";
 
 const Post = props => (
   <Layout>
@@ -8,17 +9,25 @@ const Post = props => (
       <h1 className="index__h1">{props.pelicula.Title}</h1>
       <p>{props.pelicula.Plot}</p>
       <p>
-        <strong>Country:</strong> {props.pelicula.Country}
+        <strong>▫ Country:</strong> {props.pelicula.Country}
       </p>
       <p>
-        <strong>Year:</strong> {props.pelicula.Year}
+        <strong>▫ Rating IMDB:</strong> {props.pelicula.imdbRating}
       </p>
       <p>
-        <strong>Actores:</strong> {props.pelicula.Actors}
+        <strong>▫ Actors:</strong> {props.pelicula.Actors}
       </p>
       <p>
-        {" "}
-        <strong>Production: </strong> {props.pelicula.Production}
+        <strong>▫ Director:</strong> {props.pelicula.Director}
+      </p>
+      <p>
+        <strong>▫ Year:</strong> {props.pelicula.Year}
+      </p>
+      <p>
+        <strong>▫ Actores:</strong> {props.pelicula.Actors}
+      </p>
+      <p>
+        <strong>▫ Production: </strong> {props.pelicula.Production}
       </p>
 
       {/* si existe la imagen retornala caso contrario nada */}
@@ -29,8 +38,6 @@ const Post = props => (
       ) : (
         ""
       )}
-
-      
     </div>
 
     <style jsx>{`
@@ -50,9 +57,13 @@ const Post = props => (
         justify-content: center;
       }
 
-      .Post__imagen{
+      .Post__imagen {
         max-width: 320px;
         width: 100%;
+      }
+
+      p {
+        margin: 10px 0;
       }
     `}</style>
   </Layout>

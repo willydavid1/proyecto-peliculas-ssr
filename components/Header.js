@@ -1,8 +1,5 @@
 import Link from "next/link";
 
-const linkStyle = {
-  marginRight: 15
-};
 
 export default function Header() {
   return (
@@ -13,15 +10,15 @@ export default function Header() {
         className="header__logo"
       />
       <Link href="/">
-        <a className="header__boton">Home</a>
+        <a className="header__boton">Inicio</a>
       </Link>
       <Link href="/about">
-        <a className="header__boton">About</a>
+        <a className="header__boton">Información</a>
       </Link>
 
       <style jsx>{`
         .header {
-          background: slategray;
+          background: #142850;
           height: 70px;
           display: flex;
           justify-content: space-around;
@@ -44,7 +41,7 @@ export default function Header() {
 
         .header__boton:hover {
           background: white;
-          color: slategray;
+          color: #142850;
           transition: 0.45s;
         }
 
