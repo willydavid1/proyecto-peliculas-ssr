@@ -75,7 +75,7 @@ Post.getInitialProps = async function(context) {
   // destructuramos el id del parametro realizamos la peticion y la pasamos como props al componente
   const { id } = context.query;
   const respuesta = await Axios.get(
-    `http://www.omdbapi.com/?apikey=fda41336&i=${id}`
+    `https://www.omdbapi.com/?apikey=fda41336&i=${id}`
   );
   const pelicula = respuesta.data; //de la respuesta saca la busqueda de la pelicula
 

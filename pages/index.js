@@ -198,7 +198,7 @@ Index.getInitialProps = async function({ query }) {
   // intenta realizar la busqueda a la API pero si hay un error retorna un error al componente
   try {
     const respuesta = await axios.get(
-      `http://www.omdbapi.com/?apikey=fda41336&s=batman&page=${pagina}`
+      `https://www.omdbapi.com/?apikey=fda41336&s=batman&page=${pagina}`
     );
     const peliculas = respuesta.data.Search; //de la respuesta saca la busqueda
     const respuestaEstado = respuesta.data.Response; // si el endpoint de la api no existe la busqueda que estamos haciendo retorna false pero si el endpoint es correcto respuestaEstado vale true
