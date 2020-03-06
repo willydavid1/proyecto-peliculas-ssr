@@ -1,203 +1,154 @@
-import Head from 'next/head'
+import Layout from "../components/MyLayout.js";
+import Error from "../components/Error";
 
-const Home = () => (
-  <div className="container">
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+// importamos el link y fetch
+import Link from "next/link";
+// import fetch from 'isomorphic-unfetch'
 
-    <main>
-      <h1 className="title">
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
+import axios from "axios";
 
-      <p className="description">
-        Get started by editing <code>pages/index.js</code>
-      </p>
+const Index = props => {
+  // si hubo un error al hacer la solicitud a la API retorna el error
+  if (props.error) {
+    return (
+      <Layout>
+        <Error mensajeError={props.error} />
+      </Layout>
+    );
+  }
 
-      <div className="grid">
-        <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+  // si existe o no la busqueda al endpoint de la API
+  if (props.respuestaEstado === "False") {
+    return (
+      <Layout>
+        <div className="index">
+          <h1 className="index__h1">
+            {" "}
+            Parece que haz llegado al final o la lista de Peliculas no Existe!
+          </h1>
+          <Link
+            href={{ pathname: "/", query: { pagina: `${props.pagina - 1}` } }}
+          >
+            <a>Anterior</a>
+          </Link>
+        </div>
 
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
+        <style jsx>{`
+          .index {
+            border: 1px gray solid;
+            padding: 20px;
+            margin: 20px;
+          }
 
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
+          .index__h1 {
+            margin-bottom: 50px;
+            text-align: center;
+          }
+        `}</style>
+      </Layout>
+    );
+  }
 
-        <a
-          href="https://zeit.co/new?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className="card"
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with ZEIT Now.
-          </p>
-        </a>
+  return (
+    <Layout>
+      <div className="index">
+        <h1 className="index__h1">Batman peliculas</h1>
+
+        <ul>
+          {props.peliculas.map((pelicula, index) => (
+            <li key={index}>
+              <Link href="/p/[id]" as={`/p/${pelicula.imdbID}`}>
+                <a className="index__boton">{pelicula.Title}</a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="paginacion">
+          {/* si estamos en la pagina 1 no muestres el boton anterior caso contrario muestralo */}
+          {props.pagina === 1 ? null : (
+            <Link
+              href={{ pathname: "/", query: { pagina: `${props.pagina - 1}` } }}
+            >
+              <a className="paginacion__enlace">Anterior</a>
+            </Link>
+          )}
+
+          <Link
+            href={{ pathname: "/", query: { pagina: `${props.pagina + 1}` } }}
+          >
+            <a className="paginacion__enlace">Siguiente</a>
+          </Link>
+        </div>
       </div>
-    </main>
 
-    <footer>
-      <a
-        href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-      </a>
-    </footer>
-
-    <style jsx>{`
-      .container {
-        min-height: 100vh;
-        padding: 0 0.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      main {
-        padding: 5rem 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      footer {
-        width: 100%;
-        height: 100px;
-        border-top: 1px solid #eaeaea;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      footer img {
-        margin-left: 0.5rem;
-      }
-
-      footer a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .title a {
-        color: #0070f3;
-        text-decoration: none;
-      }
-
-      .title a:hover,
-      .title a:focus,
-      .title a:active {
-        text-decoration: underline;
-      }
-
-      .title {
-        margin: 0;
-        line-height: 1.15;
-        font-size: 4rem;
-      }
-
-      .title,
-      .description {
-        text-align: center;
-      }
-
-      .description {
-        line-height: 1.5;
-        font-size: 1.5rem;
-      }
-
-      code {
-        background: #fafafa;
-        border-radius: 5px;
-        padding: 0.75rem;
-        font-size: 1.1rem;
-        font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-          DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-      }
-
-      .grid {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        max-width: 800px;
-        margin-top: 3rem;
-      }
-
-      .card {
-        margin: 1rem;
-        flex-basis: 45%;
-        padding: 1.5rem;
-        text-align: left;
-        color: inherit;
-        text-decoration: none;
-        border: 1px solid #eaeaea;
-        border-radius: 10px;
-        transition: color 0.15s ease, border-color 0.15s ease;
-      }
-
-      .card:hover,
-      .card:focus,
-      .card:active {
-        color: #0070f3;
-        border-color: #0070f3;
-      }
-
-      .card h3 {
-        margin: 0 0 1rem 0;
-        font-size: 1.5rem;
-      }
-
-      .card p {
-        margin: 0;
-        font-size: 1.25rem;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 600px) {
-        .grid {
-          width: 100%;
-          flex-direction: column;
+      <style jsx>{`
+        .index {
+          border: 1px gray solid;
+          padding: 20px;
+          margin: 20px;
         }
-      }
-    `}</style>
 
-    <style jsx global>{`
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-      }
+        .index__h1 {
+          margin-bottom: 10px;
+          text-align: center;
+        }
 
-      * {
-        box-sizing: border-box;
-      }
-    `}</style>
-  </div>
-)
+        .index__boton:hover {
+          opacity: 0.6;
+        }
 
-export default Home
+        .paginacion {
+          margin-top: 23px;
+          text-align: center;
+        }
+
+        .paginacion__enlace {
+          margin: 0 10px;
+          padding: 7px;
+          color: white;
+          background: slategray;
+          border-radius: 28px;
+          
+          -webkit-box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.7);
+          -moz-box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.7);
+          box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.7);
+        }
+
+        .paginacion__enlace:hover {
+          transition: 0.8s;
+          -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+          -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+        }
+      `}</style>
+    </Layout>
+  );
+};
+
+// es una función asíncrona estática que puede agregar a cualquier página de su aplicación. Con eso, podemos obtener datos y enviarlos como props a nuestra página.
+Index.getInitialProps = async function({ query }) {
+  // console.log(query)
+
+  // el query.pagina nos indica la pagina que estamos viendo | si query.pagina existe en la URL pasalo a numero caso contrario sera 1 | http://localhost:3000/?pagina=2 pagina vale 2
+  const pagina = query.pagina ? Number(query.pagina) : 1;
+
+  // intenta realizar la busqueda a la API pero si hay un error retorna un error al componente
+  try {
+    const respuesta = await axios.get(
+      `http://www.omdbapi.com/?apikey=fda41336&s=batman&page=${pagina}`
+    );
+    const peliculas = respuesta.data.Search; //de la respuesta saca la busqueda
+    const respuestaEstado = respuesta.data.Response; // si el endpoint de la api no existe la busqueda que estamos haciendo retorna false pero si el endpoint es correcto respuestaEstado vale true
+
+    // retorna un objeto con las peliculas de la api, la pagina donde estamos y la respuesta si existe o no la busqueda al endpoint de la API. Esto llega por props al componente
+    return { peliculas, pagina, respuestaEstado };
+  } catch (error) {
+    // console.log(error)
+    return {
+      error: "Tenemos problemas al buscar datos intenta mas tarde"
+    };
+  }
+};
+
+export default Index;
